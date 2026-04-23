@@ -1,7 +1,4 @@
 const http = require("http");
-
-const { EnvHttpProxyAgent } = require("undici-types");
-
 const hostname = "0.0.0.0";
 const port = 3000;
 
