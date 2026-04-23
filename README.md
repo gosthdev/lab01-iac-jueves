@@ -1,29 +1,119 @@
 # lab01-iac-jueves
 
+Infraestructura local con Terraform y Docker para levantar 3 contenedores:
 
-A. Levantar con Docker Compose:
+- `web`
+- `api`
+- `db` (PostgreSQL)
 
-Desde la raiz del proyecto:
+Se trabaja con 2 entornos usando `terraform workspace`:
 
-docker compose up -d --build
+- `dev`
+- `qa`
 
+## 1. Requisitos
 
-B. Levantar con Dockerfile 
+- Docker instalado y en ejecución.
+- Terraform instalado.
+- Git instalado.
 
-Desde la raiz del proyecto:
+Comandos de verificación:
 
-1. web01
+```bash
+docker --version
+terraform --version
+git --version
+```
 
-docker build -t lab/web01 ./src/web01
+## 2. Descargar proyecto
 
-docker run -p 4001:80 lab/web01
+```bash
+git clone <URL_DEL_REPOSITORIO>
+cd practica-iac/lab01-iac-jueves
+```
 
-2. web02
+## 3. Construir imágenes Docker
 
-docker build -t lab/web02 ./src/web02
+Terraform usa estas imágenes por nombre:
 
-docker run -p 4002:80 lab/web02
+- `lab/web`
+- `lab/api`
+- `lab/db`
 
-URLs:
-- web01: http://localhost:4001
-- web02: http://localhost:4002
+Construcción:
+
+```bash
+docker build -t lab/web ./src/web01
+docker build -t lab/api ./src/api
+docker build -t lab/db ./src/db
+```
+
+## 4. Inicializar Terraform
+
+```bash
+terraform init
+```
+
+## 5. Levantar entorno `dev`
+
+Seleccionar o crear workspace:
+
+```bash
+terraform workspace select dev 
+terraform workspace new dev
+```
+
+Aplicar infraestructura:
+
+```bash
+terraform apply -
+```
+
+Verificar contenedores:
+
+```bash
+docker ps
+```
+
+Puertos esperados en `dev` (segun `terraform.tfvars`):
+
+- web
+- api
+- db
+
+## 6. Levantar entorno `qa`
+
+Seleccionar o crear workspace:
+
+```bash
+terraform workspace select qa  
+terraform workspace new qa
+```
+
+Aplicar infraestructura:
+
+```bash
+terraform apply 
+```
+
+Verificar contenedores:
+
+```bash
+docker ps
+```
+
+Puertos esperados en `qa` (segun `terraform.tfvars`):
+
+- web
+- api 
+- db
+
+## 7. Cambiar entre entornos
+
+Cambiar workspace:
+
+```bash
+terraform workspace select dev
+# o
+terraform workspace select qa
+```
