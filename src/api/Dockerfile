@@ -1,6 +1,6 @@
 FROM node:alpine
 
-WORKDIR lab01-iac-jueves/src/app
+WORKDIR lab01-iac-jueves/src/api
 COPY . .
 
 EXPOSE 3000
